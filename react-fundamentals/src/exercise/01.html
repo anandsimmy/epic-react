@@ -16,3 +16,11 @@
 <!-- 🐨 Append the div to the root div using `append` -->
 <!--   💰 document.getElementById('root') -->
 <!--   📜 https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append -->
+
+<script type="module">
+    const helloDiv= document.createElement('div')
+    helloDiv.setAttribute('id', 'root')
+    helloDiv.textContent='Hello World'
+    helloDiv.className='container'
+    document.body.appendChild(helloDiv)
+</script>
