@@ -9,7 +9,7 @@ function UsernameForm({onSubmitUsername}) {
   // `event.preventDefault()` to prevent the default behavior of form submit
   // events (which refreshes the page).
 
-  const [username, setUsername]= React.useState(null)
+  const [username, setUsername]= React.useState('')
 
   const inputRef= React.useRef(null)
 
@@ -18,7 +18,7 @@ function UsernameForm({onSubmitUsername}) {
     event.preventDefault()
     // there are many ways to extract the value from the form element event. just check the event object in console
     // onSubmitUsername(event.target.elements.userNameInput.value)
-    onSubmitUsername(inputRef.current.value)
+    onSubmitUsername(username)
   }
 
   const handleChange= ({ target: { value } }) => {
