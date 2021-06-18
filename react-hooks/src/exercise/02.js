@@ -3,19 +3,32 @@
 
 import * as React from 'react'
 
-const useLocalStorageState= (key, value) => {
+const useLocalStorageState= ( key, defaultValue= '', { serialize= JSON.stringify, deserialize= JSON.parse }= {} ) => {
+
+  const [state, setState] = React.useState(() => {
+    if(window.localStorage.getItem(key)){
+      return deserialize(window.localStorage.getItem(key))
+    }
+    return typeof defaultValue === 'function' ? defaultValue() : defaultValue
+  })
+
+  const prevKeyRef= React.useRef(key)
 
   React.useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(value))
-  }, [key, value])
+    const prevKey= prevKeyRef.current
+    if(prevKey !== key){
+      window.localStorage.removeItem(prevKey)  
+    }
+    prevKeyRef.current= key
+    window.localStorage.setItem(key, serialize(state))
+  }, [key, serialize, state])
+
+  return [state, setState]
 }
 
 function Greeting({initialName = ''}) {
-  // 🐨 initialize the state to the value from localStorage
-  // 💰 window.localStorage.getItem('name') || initialName
-  const [name, setName] = React.useState(() => (JSON.parse(window.localStorage.getItem('name')) || initialName))
-
-  useLocalStorageState('name', name)
+  const [name, setName]= useLocalStorageState('name', initialName)
+  // const [name, setName]= React.useState(initialName)
 
   function handleChange(event) {
     setName(event.target.value)
@@ -32,7 +45,7 @@ function Greeting({initialName = ''}) {
 }
 
 function App() {
-  return <Greeting initialName='subhash' />
+  return <Greeting initialName='Hello Guys' />
 }
 
 export default App
