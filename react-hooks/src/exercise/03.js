@@ -14,12 +14,13 @@ function Name() {
 }
 
 // 🐨 accept `animal` and `onAnimalChange` props to this component
-function FavoriteAnimal({ setAnimal }) {
+function FavoriteAnimal({ animal, setAnimal }) {
   return (
     <div>
       <label htmlFor="animal">Favorite Animal: </label>
       <input
         id="animal"
+        value={animal}
         onChange={setAnimal}
       />
     </div>
