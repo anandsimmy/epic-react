@@ -6,9 +6,10 @@ import * as React from 'react'
 function Board() {
   // 🐨 squares is the state for this component. Add useState for squares
   const [squares, setSquares] = React.useState(Array(9).fill(null))
-  const [winner, setWinner]= React.useState(null)
-  const [nextValue, setNextValue]= React.useState('X')
-  const [status, setStatus]= React.useState(() => calculateStatus(winner, squares, nextValue))
+  
+  const nextValue= calculateNextValue(squares)
+  const winner= calculateWinner(squares)
+  const status= calculateStatus(winner, squares, nextValue)
 
   function selectSquare(squareIndex) {
     if(winner || squares[squareIndex]){
@@ -18,15 +19,6 @@ function Board() {
     squaresCopy[squareIndex]= nextValue
     setSquares(squaresCopy)
   }
-
-  React.useEffect(() => {
-    setWinner(calculateWinner(squares))
-    setNextValue(calculateNextValue(squares))
-  }, [squares])
-
-  React.useEffect(() => {
-    setStatus(calculateStatus(winner, squares, nextValue))
-  }, [nextValue])
 
   function restart() {
     setSquares(Array(9).fill(null))
@@ -75,15 +67,6 @@ function Game() {
   )
 }
 
-// eslint-disable-next-line no-unused-vars
-function calculateStatus(winner, squares, nextValue) {
-  return winner
-    ? `Winner: ${winner}`
-    : squares.every(Boolean)
-    ? `Scratch: Cat's game`
-    : `Next player: ${nextValue}`
-}
-
 function calculateNextValue(squares) {
   return squares.filter(Boolean).length % 2 === 0 ? 'X' : 'O'
 }
@@ -106,6 +89,14 @@ function calculateWinner(squares) {
     }
   }
   return null
+}
+
+function calculateStatus(winner, squares, nextValue) {
+  return winner
+    ? `Winner: ${winner}`
+    : squares.every(Boolean)
+    ? `Scratch: Cat's game`
+    : `Next player: ${nextValue}`
 }
 
 function App() {
