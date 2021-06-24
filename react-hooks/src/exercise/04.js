@@ -4,12 +4,7 @@
 import * as React from 'react'
 import { useLocalStorageState } from '../utils'
 
-function Board() {
-  const [squares, setSquares]= useLocalStorageState('squares', () => Array(9).fill(null))
-  
-  const nextValue= calculateNextValue(squares)
-  const winner= calculateWinner(squares)
-  const status= calculateStatus(winner, squares, nextValue)
+function Board({ squares, setSquares, winner, nextValue }) {
 
   function selectSquare(squareIndex) {
     if(winner || squares[squareIndex]){
@@ -34,7 +29,6 @@ function Board() {
 
   return (
     <div>
-      <div className="status">{status}</div>
       <div className="board-row">
         {renderSquare(0)}
         {renderSquare(1)}
@@ -58,10 +52,41 @@ function Board() {
 }
 
 function Game() {
+  const [squares, setSquares]= useLocalStorageState('squares', () => Array(9).fill(null))
+  const [history, setHistory]= React.useState([])
+
+  const nextValue= calculateNextValue(squares)
+  const winner= calculateWinner(squares)
+  const status= calculateStatus(winner, squares, nextValue)
+
+  React.useEffect(() => {
+    const historyCopy= [...history]
+    historyCopy.push(squares)
+    // setHistory(historyCopy)
+  }, [])
+
+  const moves= history.map((hist,index) => {
+    return (
+      <li>
+        <button onClick={setSquares(hist)}>
+          {index === 0 ? 'Go to game start' : `Go to move #${index}`}
+        </button>
+      </li>
+    )
+  })
+
   return (
     <div className="game">
       <div className="game-board">
-        <Board />
+        <Board
+          squares={squares}
+          setSquares={setSquares}
+          winner={winner}
+          nextValue={nextValue}
+        />
+      </div>
+      <div className="game-info">
+        <div>{status}</div>
       </div>
     </div>
   )
