@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { useLocalStorageState } from '../utils'
 
-function Board({ squares, setSquares, winner, nextValue, history, setHistory }) {
+function Board({ squares, winner, nextValue, history, setHistory, historyStep }) {
 
   function selectSquare(squareIndex) {
     if(winner || squares[squareIndex]){
@@ -12,15 +12,13 @@ function Board({ squares, setSquares, winner, nextValue, history, setHistory }) 
     }
     const squaresCopy= [...squares]
     squaresCopy[squareIndex]= nextValue
-    setSquares(squaresCopy)
-    const historyCopy= [...history]
+    const historyCopy= [...history].slice(0, historyStep+1)
     historyCopy.push(squaresCopy)
     setHistory(historyCopy)
   }
 
   function restart() {
-    setSquares(Array(9).fill(null))
-    setHistory([])
+    setHistory([Array(9).fill(null)])
   }
 
   function renderSquare(i) {
@@ -57,7 +55,16 @@ function Board({ squares, setSquares, winner, nextValue, history, setHistory }) 
 
 function Game() {
   const [squares, setSquares]= useLocalStorageState('squares', () => Array(9).fill(null))
-  const [history, setHistory]= React.useState([])
+  const [history, setHistory]= React.useState([squares])
+  const [historyStep, setHistoryStep]= React.useState(0)
+
+  React.useEffect(() => {
+    setHistoryStep(history.length -1)
+  }, [history])
+
+  React.useEffect(() => {
+    setSquares(history[historyStep])
+  }, [historyStep])
 
   const nextValue= calculateNextValue(squares)
   const winner= calculateWinner(squares)
@@ -65,9 +72,10 @@ function Game() {
 
   const moves= history.map((currentHistory,index) => {
     return (
-      <li>
-        <button disabled={index===history.length-1} onClick={()=>setSquares(currentHistory)}>
-          {index === 0 ? 'Go to game start' : `Go to move #${index}`}
+      <li key={index}>
+        <button disabled={index === historyStep} onClick={()=>setHistoryStep(index)}>
+          {index === 0 ? 'Go to game start ' : `Go to move #${index} `}
+          {index === historyStep && '(current)'}
         </button>
       </li>
     )
@@ -78,11 +86,11 @@ function Game() {
       <div className="game-board">
         <Board
           squares={squares}
-          setSquares={setSquares}
           winner={winner}
           nextValue={nextValue}
           history={history}
           setHistory={setHistory}
+          historyStep={historyStep}
         />
       </div>
       <div className="game-info">
