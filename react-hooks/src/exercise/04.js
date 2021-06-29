@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { useLocalStorageState } from '../utils'
 
-function Board({ squares, winner, nextValue, history, setHistory, historyStep }) {
+function Board({ squares, winner, nextValue, history, setHistory, currentStep, setCurrentStep }) {
 
   function selectSquare(squareIndex) {
     if(winner || squares[squareIndex]){
@@ -12,13 +12,15 @@ function Board({ squares, winner, nextValue, history, setHistory, historyStep })
     }
     const squaresCopy= [...squares]
     squaresCopy[squareIndex]= nextValue
-    const historyCopy= [...history].slice(0, historyStep+1)
+    const historyCopy= history.slice(0, currentStep + 1)
     historyCopy.push(squaresCopy)
     setHistory(historyCopy)
+    setCurrentStep(historyCopy.length - 1)
   }
 
   function restart() {
     setHistory([Array(9).fill(null)])
+    setCurrentStep(0)
   }
 
   function renderSquare(i) {
@@ -54,18 +56,10 @@ function Board({ squares, winner, nextValue, history, setHistory, historyStep })
 }
 
 function Game() {
-  const [squares, setSquares]= useLocalStorageState('squares', () => Array(9).fill(null))
-  const [history, setHistory]= React.useState([squares])
-  const [historyStep, setHistoryStep]= React.useState(0)
+  const [history, setHistory]= useLocalStorageState('tic-tac-toe:history', [Array(9).fill(null)])
+  const [currentStep, setCurrentStep]= useLocalStorageState('tic-tac-toe:step', 0)
 
-  React.useEffect(() => {
-    setHistoryStep(history.length -1)
-  }, [history])
-
-  React.useEffect(() => {
-    setSquares(history[historyStep])
-  }, [historyStep])
-
+  const squares= history[currentStep] ?? []
   const nextValue= calculateNextValue(squares)
   const winner= calculateWinner(squares)
   const status= calculateStatus(winner, squares, nextValue)
@@ -73,9 +67,9 @@ function Game() {
   const moves= history.map((currentHistory,index) => {
     return (
       <li key={index}>
-        <button disabled={index === historyStep} onClick={()=>setHistoryStep(index)}>
+        <button disabled={index === currentStep} onClick={()=>setCurrentStep(index)}>
           {index === 0 ? 'Go to game start ' : `Go to move #${index} `}
-          {index === historyStep && '(current)'}
+          {index === currentStep && '(current)'}
         </button>
       </li>
     )
@@ -90,7 +84,8 @@ function Game() {
           nextValue={nextValue}
           history={history}
           setHistory={setHistory}
-          historyStep={historyStep}
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
         />
       </div>
       <div className="game-info">
