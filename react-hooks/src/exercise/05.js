@@ -16,7 +16,7 @@ function Tilt({children}) {
       glare: true,
       'max-glare': 0.5,
     })
-    // return () => tiltNode.vanillaTilt.destroy()
+    return () => tiltNode.vanillaTilt.destroy()
   }, [])
 
   // 💰 Don't forget to return a cleanup function. VanillaTilt.init will add an
