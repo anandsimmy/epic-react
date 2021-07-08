@@ -11,7 +11,7 @@ import { PokemonForm, fetchPokemon, PokemonInfoFallback, PokemonDataView } from 
 function PokemonInfo({pokemonName}) {
   const [pokemon, setPokemon]= React.useState(null)
   React.useEffect(() => {
-    // if(!pokemonName) return;
+    if(!pokemonName) return;
     setPokemon(null)
     fetchPokemon(pokemonName).then((data) => {
       setPokemon(data)
