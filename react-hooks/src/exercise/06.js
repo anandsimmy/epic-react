@@ -1,43 +1,40 @@
-// useEffect: HTTP requests
-// http://localhost:3000/isolated/exercise/06.js
-
 import * as React from 'react'
-// 🐨 you'll want the following additional things from '../pokemon':
-// fetchPokemon: the function we call to get the pokemon info
-// PokemonInfoFallback: the thing we show while we're loading the pokemon info
-// PokemonDataView: the stuff we use to display the pokemon info
 import { PokemonForm, fetchPokemon, PokemonInfoFallback, PokemonDataView } from '../pokemon'
 
+const STATUS= {
+  IDLE: 'idle',
+  PENDING: 'pending',
+  RESOLVED: 'resolved',
+  REJECTED: 'rejected'
+}
+
 function PokemonInfo({pokemonName}) {
-  const [pokemon, setPokemon]= React.useState(null)
-  const [error, setError]= React.useState(null)
+  const [appData, setAppData]= React.useState({ status: STATUS.IDLE, pokemon: null, error: null })
+
   React.useEffect(() => {
     if(!pokemonName) return;
-    setPokemon(null)
-    fetchPokemon(pokemonName).then((data) => { setPokemon(data)}, (error) => {setError(error)})
+    setAppData({ status:STATUS.PENDING, pokemon: null, error: null })
+    fetchPokemon(pokemonName).then(
+      (pokemon) => setAppData({ status:STATUS.RESOLVED,  pokemon }),
+      (error) => setAppData({ status:STATUS.REJECTED,  error })
+      )
   }, [pokemonName])
-  // 🐨 return the following things based on the `pokemon` state and `pokemonName` prop:
-  //   1. no pokemonName: 'Submit a pokemon'
-  //   2. pokemonName but no pokemon: <PokemonInfoFallback name={pokemonName} />
-  //   3. pokemon: <PokemonDataView pokemon={pokemon} />
 
-  if(pokemonName && !pokemon){
-    return <PokemonInfoFallback name={pokemonName} />
-  }
-
-  if (pokemon){
-    return <PokemonDataView pokemon={pokemon} />
-  }
-
-  return (
-    <>
-      { !error ? 'Submit a pokemon' :
+  switch(appData.status){
+    case STATUS.PENDING:
+      return <PokemonInfoFallback name={pokemonName} />
+    case STATUS.RESOLVED:
+      return <PokemonDataView pokemon={appData.pokemon} />
+    case STATUS.REJECTED:
+      return (
         <div role="alert">
-          There was an error: <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
+            There was an error: <pre style={{whiteSpace: 'normal'}}>{appData.error.message}</pre>
         </div>
-      }
-    </>
-  )
+      )
+    case STATUS.IDLE:
+    default:
+      return 'Submit a pokemon'
+  }
 }
 
 function App() {
