@@ -40,6 +40,7 @@ const FallbackComponent= ({ error, resetErrorBoundary }) => (
 
 function PokemonInfo({pokemonName}) {
   const [appData, setAppData]= React.useState({ status: STATUS.IDLE, pokemon: null, error: null })
+  console.log('hey PokemonInfo rendering');
 
   React.useEffect(() => {
     if(!pokemonName) return;
