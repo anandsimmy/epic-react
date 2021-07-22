@@ -24,7 +24,7 @@ const STATUS= {
 //     const { error }= this.state
 
 //     if (error) {
-//       return <this.props.Fallback error={error} />
+//       return <this.props.FallbackComponent error={error} />
 //     }
 
 //     return this.props.children; 
