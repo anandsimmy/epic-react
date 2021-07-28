@@ -1,6 +1,5 @@
 // useState: greeting
 
-
 import * as React from 'react'
 
 function Greeting({ initialName= '' }) {
