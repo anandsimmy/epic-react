@@ -7,19 +7,23 @@ const countReducer= (previousState, newState) => {
   if(typeof newState === 'function'){
     return newState(previousState)
   }
-  console.log('hello', previousState, newState);
-  return {
-    ...previousState,
-    ...newState
+  switch(newState.type){
+    case 'INCREMENT':
+      return {
+        ...previousState,
+        count: previousState.count + newState.step
+      }
+    default:
+      return previousState
   }
 }
 
-function Counter({initialCount = 0, step = 2}) {
+function Counter({initialCount = 0, step = 3}) {
   
-  const [state, setState] = React.useReducer(countReducer, {count: initialCount})
+  const [state, dispatch] = React.useReducer(countReducer, {count: initialCount})
   
   const { count }= state
-  const increment = () => setState((currentState) => ({ ...currentState, count: currentState.count + step }))
+  const increment = () => dispatch({ type:'INCREMENT', step })
   return <button onClick={increment}>{count}</button>
 }
 
