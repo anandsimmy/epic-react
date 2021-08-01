@@ -1,4 +1,4 @@
-// useReducer: simple Counter
+useReducer: simple Counter
 // http://localhost:3000/isolated/exercise/01.js
 
 import * as React from 'react'
