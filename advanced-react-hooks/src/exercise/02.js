@@ -11,7 +11,7 @@ import {
 } from '../pokemon'
 
 // 🐨 this is going to be our generic asyncReducer
-function pokemonInfoReducer(state, action) {
+function asyncReducer(state, action) {
   switch (action.type) {
     case 'pending': {
       return {status: 'pending', data: null, error: null}
@@ -29,7 +29,12 @@ function pokemonInfoReducer(state, action) {
 }
 
 const useAsync= (asyncCallback, initialState, dependencies) => {
-  const [state, dispatch] = React.useReducer(pokemonInfoReducer, initialState)
+  const [state, dispatch] = React.useReducer(asyncReducer, {
+    status: 'idle',
+    data: null,
+    error: null,
+    ...initialState
+  })
 
   React.useEffect(() => {
     const promise = asyncCallback()
@@ -37,7 +42,7 @@ const useAsync= (asyncCallback, initialState, dependencies) => {
       return
     }
     dispatch({type: 'pending'})
-    asyncCallback().then(
+    promise().then(
       data => {
         dispatch({type: 'resolved', data})
       },
