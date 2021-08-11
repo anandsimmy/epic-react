@@ -36,10 +36,23 @@ const useAsync= (initialState) => {
     ...initialState
   })
 
+  const promiseRef= React.useRef(null)
+
+  React.useEffect(() => {
+    return () => {
+      if(promiseRef.current){
+        promiseRef.current.then(() => {
+          
+        })
+      }
+    }
+  }, [])
+
   const run= React.useCallback((promise) => {
     if (!promise) {
       return
     }
+    promiseRef.current= promise
     dispatch({type: 'pending'})
     promise.then(
       data => {
