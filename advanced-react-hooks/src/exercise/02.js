@@ -41,9 +41,7 @@ const useAsync= (initialState) => {
   React.useEffect(() => {
     return () => {
       if(promiseRef.current){
-        promiseRef.current.then(() => {
-          
-        })
+        // promiseRef.current= null
       }
     }
   }, [])
@@ -56,10 +54,10 @@ const useAsync= (initialState) => {
     dispatch({type: 'pending'})
     promise.then(
       data => {
-        dispatch({type: 'resolved', data})
+        promiseRef.current && dispatch({type: 'resolved', data})
       },
       error => {
-        dispatch({type: 'rejected', error})
+        promiseRef.current && dispatch({type: 'rejected', error})
       },
     )
   }, [])
