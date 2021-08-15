@@ -41,7 +41,7 @@ const useAsync= (initialState) => {
   React.useEffect(() => {
     return () => {
       if(promiseRef.current){
-        // promiseRef.current= null
+        promiseRef.current= null
       }
     }
   }, [])
