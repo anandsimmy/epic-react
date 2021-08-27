@@ -16,6 +16,7 @@ import {
 import {useAsync} from '../utils'
 
 // 🐨 Create a PokemonCacheContext
+const PokemonCacheContext = React.createContext()
 
 // 🐨 create a PokemonCacheProvider function
 // 🐨 useReducer with pokemonCacheReducer in your PokemonCacheProvider
