@@ -4,7 +4,12 @@
 import * as React from 'react'
 
 function useMedia(query, initialState = false) {
-  React.useDebugValue({ query, initialState })
+
+  const debugValueFormatFunction= ({ query, initialState }) => {
+    return `query:${query}, initial: ${initialState}`
+  }
+
+  React.useDebugValue({ query, initialState }, debugValueFormatFunction)
   const [state, setState] = React.useState(initialState)
   // 🐨 call React.useDebugValue here.
   // 💰 here's the formatted label I use: `\`${query}\` => ${state}`
