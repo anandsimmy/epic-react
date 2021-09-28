@@ -11,8 +11,6 @@ function useMedia(query, initialState = false) {
 
   React.useDebugValue({ query, initialState }, debugValueFormatFunction)
   const [state, setState] = React.useState(initialState)
-  // 🐨 call React.useDebugValue here.
-  // 💰 here's the formatted label I use: `\`${query}\` => ${state}`
 
   React.useEffect(() => {
     let mounted = true
