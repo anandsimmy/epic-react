@@ -111,7 +111,8 @@ function UserSettings() {
     event.preventDefault()
     updateUser(userDispatch, user, formState)
     .catch((error) => {
-      
+      console.log('catching error', error);
+      // ignore error for now
     })
   }
 
