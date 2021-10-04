@@ -81,7 +81,7 @@ const updateUser = async (dispatch, user, updates) => {
     return updateUser
   } catch (error) {
     dispatch({type: 'fail update', error})
-    // return Promise.reject(error)
+    throw error
   }
 }
 
