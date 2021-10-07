@@ -8,6 +8,15 @@ function Toggle(props) {
   const [on, setOn] = React.useState(false)
   const toggle = () => setOn(!on)
 
+  // common way
+  // return (
+  //   <>
+  //     <ToggleOn on={on}>The button is on</ToggleOn>
+  //     <ToggleOff on={on}>The button is off</ToggleOff>
+  //     <ToggleButton on={on} toggle={toggle}/>
+  //   </>
+  // )
+
   return () => React.Children.map(props.children, (child) => {
     return React.cloneElement(child, {
       on, toggle
