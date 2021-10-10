@@ -17,7 +17,13 @@ function Toggle(props) {
   //   </>
   // )
 
-  return () => React.Children.map(props.children, (child) => {
+  // console.log(React.Children.map(props.children, (child) => {
+  //   return React.cloneElement(child, {
+  //     on, toggle
+  //   })
+  // }) );
+
+  return React.Children.map(props.children, (child) => {
     return React.cloneElement(child, {
       on, toggle
     })
