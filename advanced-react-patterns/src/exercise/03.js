@@ -7,7 +7,8 @@ import {Switch} from '../switch'
 // 🐨 create your ToggleContext context here
 // 📜 https://reactjs.org/docs/context.html#reactcreatecontext
 
-const ToggleContext= React.createContext()
+const ToggleContext= React.createContext({})
+ToggleContext.displayName= 'ToggleContext'
 
 function Toggle({children}) {
   const [on, setOn] = React.useState(false)
@@ -19,9 +20,14 @@ function Toggle({children}) {
   //     : React.cloneElement(child, {on, toggle})
   // })
 
+  console.log('children', children);
+
+  const [ele, setEle]= React.useState(null);
+
   return (
     <ToggleContext.Provider value={{ on, toggle }}>
-      {children}
+      {setTimeout(() => setEle(children), 2000)}
+      {ele}
     </ToggleContext.Provider>
   )
 }
@@ -35,6 +41,7 @@ function useToggle() {
 }
 
 function ToggleOn({children}) {
+  console.log('Hello, Anand is the best')
   const { on }= useToggle()
   return <>
   {on ? children : null}
@@ -53,21 +60,21 @@ function ToggleButton({...props}) {
   return <Switch on={on} onClick={toggle} {...props} />
 }
 
-// function App() {
-//   return (
-//     <div>
-//       <Toggle>
-//         <ToggleOn>The button is on</ToggleOn>
-//         <ToggleOff>The button is off</ToggleOff>
-//         <div>
-//           <ToggleButton />
-//         </div>
-//       </Toggle>
-//     </div>
-//   )
-// }
+function App() {
+  return (
+    <div>
+      <Toggle>
+        <ToggleOn>The button is on</ToggleOn>
+        <ToggleOff>The button is off</ToggleOff>
+        <div>
+          <ToggleButton />
+        </div>
+      </Toggle>
+    </div>
+  )
+}
 
-const App = () => <ToggleButton />
+// const App = () => <ToggleButton />
 
 export default App
 
