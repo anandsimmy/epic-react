@@ -18,7 +18,11 @@ function App() {
     <div>
       <Switch on={on} {...togglerProps} />
       <hr />
-      <button aria-label="custom-button" {...togglerProps}>
+      <button
+      aria-label="custom-button"
+      {...togglerProps}
+      onClick={()=>console.log('hello, Anand is the best')}
+      >
         {on ? 'on' : 'off'}
       </button>
     </div>
