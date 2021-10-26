@@ -8,20 +8,28 @@ function useToggle() {
   const [on, setOn] = React.useState(false)
   const toggle = () => setOn(!on)
 
-  const togglerProps = {'aria-pressed': on, onClick: toggle}
-  return {on, togglerProps}
+  const getTogglerProps = (props) => {
+    return {
+      'aria-pressed': on,
+      onClick: toggle,
+      ...props,
+    }
+  }
+  return {on, getTogglerProps}
 }
 
 function App() {
-  const {on, togglerProps} = useToggle()
+  const {on, getTogglerProps} = useToggle()
   return (
     <div>
-      <Switch on={on} {...togglerProps} />
+      <Switch {...getTogglerProps({ on })} />
       <hr />
       <button
-      aria-label="custom-button"
-      {...togglerProps}
-      onClick={()=>console.log('hello, Anand is the best')}
+      {...getTogglerProps({
+        'aria-label': 'custom-button',
+        id: 'custom-button-id',
+        onClick: ()=>console.log('hello, Anand is the best')
+      })}
       >
         {on ? 'on' : 'off'}
       </button>
