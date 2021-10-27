@@ -37,8 +37,7 @@ function useToggle() {
   if(!context){
     throw new Error('Please use ToggleContext inside its provider')
   }
-  return React.useContext(ToggleContext)
-}
+  return context
 
 function ToggleOn({children}) {
   console.log('Hello, Anand is the best')
