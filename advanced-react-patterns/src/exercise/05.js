@@ -78,6 +78,7 @@ function App() {
   }
 
   const {on, getTogglerProps, getResetterProps} = useToggle({
+    initialOn: false,
     reducer: toggleStateReducer,
   })
 
@@ -101,7 +102,11 @@ function App() {
       ) : timesClicked > 0 ? (
         <div data-testid="click-count">Click count: {timesClicked}</div>
       ) : null}
-      <button {...getResetterProps({onClick: () => setTimesClicked(0)})}>
+      <button
+        {...getResetterProps({
+          onClick: () => setTimesClicked(0)
+        })}
+      >
         Reset
       </button>
     </div>
