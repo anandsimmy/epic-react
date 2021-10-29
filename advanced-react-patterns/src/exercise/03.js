@@ -38,6 +38,7 @@ function useToggle() {
     throw new Error('Please use ToggleContext inside its provider')
   }
   return context
+}
 
 function ToggleOn({children}) {
   console.log('Hello, Anand is the best')
