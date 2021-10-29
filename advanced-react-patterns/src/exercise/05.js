@@ -21,12 +21,12 @@ function toggleReducer(state, {type, initialState}) {
 }
 
 // 🐨 add a new option called `reducer` that defaults to `toggleReducer`
-function useToggle({initialOn = false} = {}) {
+function useToggle({initialOn = false, reducer = toggleReducer} = {}) {
   const {current: initialState} = React.useRef({on: initialOn})
   // 🐨 instead of passing `toggleReducer` here, pass the `reducer` that's
   // provided as an option
   // ... and that's it! Don't forget to check the 💯 extra credit!
-  const [state, dispatch] = React.useReducer(toggleReducer, initialState)
+  const [state, dispatch] = React.useReducer(reducer, initialState)
   const {on} = state
 
   const toggle = () => dispatch({type: 'toggle'})
@@ -60,8 +60,8 @@ function App() {
   const [timesClicked, setTimesClicked] = React.useState(0)
   const clickedTooMuch = timesClicked >= 4
 
-  function toggleStateReducer(state, action) {
-    switch (action.type) {
+  function toggleStateReducer(state, { type, initialState }) {
+    switch (type) {
       case 'toggle': {
         if (clickedTooMuch) {
           return {on: state.on}
@@ -69,10 +69,10 @@ function App() {
         return {on: !state.on}
       }
       case 'reset': {
-        return {on: false}
+        return initialState
       }
       default: {
-        throw new Error(`Unsupported type: ${action.type}`)
+        throw new Error(`Unsupported type: ${type}`)
       }
     }
   }
@@ -87,7 +87,10 @@ function App() {
         {...getTogglerProps({
           disabled: clickedTooMuch,
           on: on,
-          onClick: () => setTimesClicked(count => count + 1),
+          onClick: () => {
+            console.log(timesClicked) 
+            setTimesClicked(count => count + 1) 
+          },
         })}
       />
       {clickedTooMuch ? (
