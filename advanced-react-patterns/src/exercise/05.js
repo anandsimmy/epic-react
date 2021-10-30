@@ -90,7 +90,7 @@ function App() {
           on: on,
           onClick: () => {
             console.log(timesClicked) 
-            setTimesClicked(count => count + 1) 
+            !clickedTooMuch && setTimesClicked(count => count + 1) 
           },
         })}
       />
