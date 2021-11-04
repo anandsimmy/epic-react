@@ -61,20 +61,10 @@ function App() {
   const clickedTooMuch = timesClicked >= 4
 
   function toggleStateReducer(state, { type, initialState }) {
-    switch (type) {
-      case 'toggle': {
-        if (clickedTooMuch) {
-          return {on: state.on}
-        }
-        return {on: !state.on}
-      }
-      case 'reset': {
-        return initialState
-      }
-      default: {
-        throw new Error(`Unsupported type: ${type}`)
-      }
+    if(type === 'toggle' && clickedTooMuch) {
+      return {on: state.on}
     }
+    return toggleReducer(state, { type, initialState })
   }
 
   const {on, getTogglerProps, getResetterProps} = useToggle({
