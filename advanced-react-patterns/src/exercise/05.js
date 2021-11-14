@@ -69,7 +69,7 @@ function App() {
     if(type === actionTypes.TOGGLE && clickedTooMuch) {
       return {on: state.on}
     }
-    return toggleReducer(state, { type })
+    return toggleReducer(state, { type, initialState })
   }
 
   const {on, getTogglerProps, getResetterProps} = useToggle({
