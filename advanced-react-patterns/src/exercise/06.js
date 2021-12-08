@@ -3,6 +3,7 @@
 
 import * as React from 'react'
 import {Switch} from '../switch'
+import warning from 'warning'
 
 const callAll =
   (...fns) =>
@@ -39,6 +40,15 @@ function useToggle({
   const onIsControlled = controlledOn !== undefined
 
   const on = onIsControlled ? controlledOn : state.on
+
+  const checkValidCall = () => {
+    if (onIsControlled && !onChange) {
+      return false
+    }
+    return true
+  }
+
+  warning(checkValidCall(), 'Passing on without onChange')
 
   function dispatchWithOnChange(action) {
     if (!onIsControlled) {
@@ -103,7 +113,7 @@ function App() {
   return (
     <div>
       <div>
-        <Toggle on={bothOn} onChange={handleToggleChange} />
+        <Toggle on={bothOn} />
         <Toggle on={bothOn} onChange={handleToggleChange} />
       </div>
       {timesClicked > 4 ? (
