@@ -39,6 +39,8 @@ function useToggle({
   const [state, dispatch] = React.useReducer(reducer, initialState)
   const onIsControlled = controlledOn !== undefined
 
+  const {current: onIsControlledRef} = React.useRef(onIsControlled)
+
   const on = onIsControlled ? controlledOn : state.on
 
   const checkValidCall = () => {
@@ -48,7 +50,18 @@ function useToggle({
     return true
   }
 
+  const checkControlledStateChange = () => {
+    if (onIsControlledRef !== onIsControlled) {
+      return false
+    }
+    return true
+  }
+
   warning(checkValidCall(), 'Passing on without onChange')
+  warning(
+    checkControlledStateChange(),
+    'Passing a value for on and later passing undefined or null or vice-versa',
+  )
 
   function dispatchWithOnChange(action) {
     if (!onIsControlled) {
