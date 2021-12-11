@@ -43,6 +43,7 @@ function useToggle({
 
   const on = onIsControlled ? controlledOn : state.on
 
+  React.useEffect(() => {
   const checkValidCall = () => {
     if (onIsControlled && !onChange) {
       return false
@@ -56,12 +57,13 @@ function useToggle({
     }
     return true
   }
-
   warning(checkValidCall(), 'Passing on without onChange')
   warning(
     checkControlledStateChange(),
     'Passing a value for on and later passing undefined or null or vice-versa',
-  )
+  )  
+}, [onIsControlled, onChange, onIsControlledRef])
+
 
   function dispatchWithOnChange(action) {
     if (!onIsControlled) {
