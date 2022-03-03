@@ -37,33 +37,33 @@ function useToggle({
 } = {}) {
   const {current: initialState} = React.useRef({on: initialOn})
   const [state, dispatch] = React.useReducer(reducer, initialState)
-  const onIsControlled = controlledOn !== undefined
+  const onIsControlled = controlledOn != undefined
 
   const {current: onIsControlledRef} = React.useRef(onIsControlled)
 
   const on = onIsControlled ? controlledOn : state.on
 
   React.useEffect(() => {
-  const checkValidCall = () => {
-    if (onIsControlled && !onChange) {
-      return false
+    const checkValidCall = () => {
+      if (onIsControlled && !onChange) {
+        return false
+      }
+      return true
     }
-    return true
-  }
 
-  const checkControlledStateChange = () => {
-    if (onIsControlledRef !== onIsControlled) {
-      return false
+    const checkControlledStateChange = () => {
+      console.log(onIsControlledRef, onIsControlled)
+      if (onIsControlledRef !== onIsControlled) {
+        return false
+      }
+      return true
     }
-    return true
-  }
-  warning(checkValidCall(), 'Passing on without onChange')
-  warning(
-    checkControlledStateChange(),
-    'Passing a value for on and later passing undefined or null or vice-versa',
-  )  
-}, [onIsControlled, onChange, onIsControlledRef])
-
+    warning(checkValidCall(), 'Passing on without onChange')
+    warning(
+      checkControlledStateChange(),
+      'Passing a value for on and later passing undefined or null or vice-versa',
+    )
+  }, [onIsControlled, onIsControlledRef, onChange])
 
   function dispatchWithOnChange(action) {
     if (!onIsControlled) {
@@ -116,19 +116,19 @@ function App() {
     if (action.type === actionTypes.toggle && timesClicked > 4) {
       return
     }
-    setBothOn(state.on)
+    setBothOn(undefined)
     setTimesClicked(c => c + 1)
   }
 
   function handleResetClick() {
-    setBothOn(false)
+    setBothOn(null)
     setTimesClicked(0)
   }
 
   return (
     <div>
       <div>
-        <Toggle on={bothOn} />
+        <Toggle on={bothOn} onChange={handleToggleChange} />
         <Toggle on={bothOn} onChange={handleToggleChange} />
       </div>
       {timesClicked > 4 ? (
