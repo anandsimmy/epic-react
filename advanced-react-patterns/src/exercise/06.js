@@ -52,7 +52,7 @@ function useToggle({
     }
 
     const checkControlledStateChange = () => {
-      console.log(onIsControlledRef, onIsControlled)
+      // console.log(onIsControlledRef, onIsControlled)
       if (onIsControlledRef !== onIsControlled) {
         return false
       }
@@ -116,12 +116,12 @@ function App() {
     if (action.type === actionTypes.toggle && timesClicked > 4) {
       return
     }
-    setBothOn(undefined)
+    setBothOn(null)
     setTimesClicked(c => c + 1)
   }
 
   function handleResetClick() {
-    setBothOn(null)
+    setBothOn(false)
     setTimesClicked(0)
   }
 
