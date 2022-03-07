@@ -116,7 +116,7 @@ function App() {
     if (action.type === actionTypes.toggle && timesClicked > 4) {
       return
     }
-    setBothOn(null)
+    setBothOn(state.on)
     setTimesClicked(c => c + 1)
   }
 
