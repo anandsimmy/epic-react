@@ -29,11 +29,8 @@ function toggleReducer(state, {type, initialState}) {
   }
 }
 
-const useControlledSwitchWarning = (
-  controlled,
-  controlledRef,
-  onChangeHandler,
-) => {
+const useControlledSwitchWarning = (controlled, onChangeHandler) => {
+  const {current: controlledRef} = React.useRef(controlled)
   React.useEffect(() => {
     const checkValidCall = () => {
       if (controlled && !onChangeHandler) {
@@ -47,11 +44,14 @@ const useControlledSwitchWarning = (
       }
       return true
     }
-    warning(checkValidCall(), 'Passing on without onChange')
-    warning(
-      checkControlledStateChange(),
-      'Passing a value for on and later passing undefined or null or vice-versa',
-    )
+    console.log('node env', process.env.NODE_ENV)
+    if (process.env.NODE_ENV !== 'production') {
+      warning(checkValidCall(), 'Passing on without onChange')
+      warning(
+        checkControlledStateChange(),
+        'Passing a value for on and later passing undefined or null or vice-versa',
+      )
+    }
   }, [controlled, controlledRef, onChangeHandler])
 }
 
@@ -65,11 +65,9 @@ function useToggle({
   const [state, dispatch] = React.useReducer(reducer, initialState)
   const onIsControlled = controlledOn != undefined
 
-  const {current: onIsControlledRef} = React.useRef(onIsControlled)
-
   const on = onIsControlled ? controlledOn : state.on
 
-  useControlledSwitchWarning(onIsControlled, onIsControlledRef, onChange)
+  useControlledSwitchWarning(onIsControlled, onChange)
 
   function dispatchWithOnChange(action) {
     if (!onIsControlled) {
