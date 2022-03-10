@@ -9,13 +9,13 @@ function Toggle(props) {
   const toggle = () => setOn(!on)
 
   // my way
-  // return (
-  //   <>
-  //     <ToggleOn on={on}>The button is on</ToggleOn>
-  //     <ToggleOff on={on}>The button is off</ToggleOff>
-  //     <ToggleButton on={on} toggle={toggle}/>
-  //   </>
-  // )
+  return (
+    <>
+      <ToggleOn on={on}>The button is on</ToggleOn>
+      <ToggleOff on={on}>The button is off</ToggleOff>
+      <ToggleButton on={on} toggle={toggle} />
+    </>
+  )
 
   // console.log(React.Children.map(props.children, (child) => {
   //   return React.cloneElement(child, {
@@ -29,11 +29,11 @@ function Toggle(props) {
   //   })
   // }))
 
-  
-  return React.Children.map(props.children, (child) => {
-    if(allowedtypes.includes(child.type)) {
+  return React.Children.map(props.children, child => {
+    if (allowedtypes.includes(child.type)) {
       return React.cloneElement(child, {
-        on, toggle
+        on,
+        toggle,
       })
     }
     return child
@@ -43,13 +43,13 @@ function Toggle(props) {
 // 🐨 Flesh out each of these components
 
 // Accepts `on` and `children` props and returns `children` if `on` is true
-const ToggleOn = ({ on, children }) => on ? children : null
+const ToggleOn = ({on, children}) => (on ? children : null)
 
 // Accepts `on` and `children` props and returns `children` if `on` is false
-const ToggleOff = ({ on, children }) => on ? null : children
+const ToggleOff = ({on, children}) => (on ? null : children)
 
 // Accepts `on` and `toggle` props and returns the <Switch /> with those props.
-const ToggleButton = ({ on, toggle }) => <Switch on={on} onClick={toggle} />
+const ToggleButton = ({on, toggle}) => <Switch on={on} onClick={toggle} />
 
 const allowedtypes = [ToggleOn, ToggleOff, ToggleButton]
 
