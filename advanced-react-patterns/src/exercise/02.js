@@ -9,13 +9,13 @@ function Toggle(props) {
   const toggle = () => setOn(!on)
 
   // my way
-  return (
-    <>
-      <ToggleOn on={on}>The button is on</ToggleOn>
-      <ToggleOff on={on}>The button is off</ToggleOff>
-      <ToggleButton on={on} toggle={toggle} />
-    </>
-  )
+  // return (
+  //   <>
+  //     <ToggleOn on={on}>The button is on</ToggleOn>
+  //     <ToggleOff on={on}>The button is off</ToggleOff>
+  //     <ToggleButton on={on} toggle={toggle} />
+  //   </>
+  // )
 
   // console.log(React.Children.map(props.children, (child) => {
   //   return React.cloneElement(child, {
