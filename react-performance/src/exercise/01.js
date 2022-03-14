@@ -3,7 +3,8 @@
 
 import * as React from 'react'
 // 💣 remove this import
-import Globe from '../globe'
+// import Globe from '../globe'
+const Globe = React.lazy('../globe')
 
 // 🐨 use React.lazy to create a Globe component which uses a dynamic import
 // to get the Globe component from the '../globe' module.
